@@ -247,14 +247,6 @@ public class MainView extends View {
         canvas.drawText(getResources().getString(R.string.reverse), startingX, sYIcons - centerText() * 2, paint);
     }
 
-    private void drawInstructions(Canvas canvas) {
-        paint.setTextSize(instructionsTextSize);
-        paint.setTextAlign(Paint.Align.LEFT);
-        int textShiftY = centerText() * 2;
-        canvas.drawText(getResources().getString(R.string.instructions),
-                startingX, endingY - textShiftY + textPaddingSize, paint);
-    }
-
     private void drawBackground(Canvas canvas) {
         drawDrawable(canvas, backgroundRectangle, startingX, startingY, endingX, endingY);
     }
@@ -372,13 +364,6 @@ public class MainView extends View {
         }
     }
 
-    private void drawEndlessText(Canvas canvas) {
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTextSize(bodyTextSize);
-        paint.setColor(getResources().getColor(R.color.text_black));
-        canvas.drawText(getResources().getString(R.string.endless), startingX, sYIcons - centerText() * 2, paint);
-    }
-
     private void createEndGameStates(Canvas canvas, boolean win) {
         int width = endingX - startingX;
         int length = endingY - startingY;
@@ -415,7 +400,6 @@ public class MainView extends View {
         drawUndoButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
-        drawInstructions(canvas);
 
     }
 
