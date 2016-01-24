@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.uberspot.a2048.R;
+import com.narayan.a2048.R;
 
 class InputListener implements View.OnTouchListener {
 

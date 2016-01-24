@@ -11,8 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 
-import com.uberspot.a2048.R;
-
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
@@ -245,6 +243,8 @@ public class MainView extends View {
         int textShiftY = centerText() * 2;
         int headerStartY = sYAll - textShiftY;
         canvas.drawText(getResources().getString(R.string.header), startingX, headerStartY, paint);
+        paint.setTextSize(bodyTextSize);
+        canvas.drawText(getResources().getString(R.string.reverse), startingX, sYIcons - centerText() * 2, paint);
     }
 
     private void drawInstructions(Canvas canvas) {
