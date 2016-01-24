@@ -284,7 +284,6 @@ public class MainView extends View {
                     //Get and represent the value of the tile
                     int value = currentTile.getValue();
                     int index = log2(value);
-
                     //Check for any active animations
                     ArrayList<AnimationCell> aArray = game.aGrid.getAnimationCell(xx, yy);
                     boolean animated = false;
@@ -318,9 +317,9 @@ public class MainView extends View {
                         } else if (aCell.getAnimationType() == MainGame.MOVE_ANIMATION) {  // Moving animation
                             double percentDone = aCell.getPercentageDone();
                             int tempIndex = index;
-                            if (aArray.size() >= 2) {
+                            /*if (aArray.size() >= 2) {
                                 tempIndex = tempIndex - 1;
-                            }
+                            }*/
                             int previousX = aCell.extras[0];
                             int previousY = aCell.extras[1];
                             int currentX = currentTile.getX();
@@ -407,7 +406,7 @@ public class MainView extends View {
         Resources resources = getResources();
         int[] cellRectangleIds = getCellRectangleIds();
         paint.setTextAlign(Paint.Align.CENTER);
-        for (int xx = 1; xx < bitmapCell.length; xx++) {
+        for (int xx = 0; xx < bitmapCell.length; xx++) {
             int value = (int) Math.pow(2, xx);
             paint.setTextSize(cellTextSize);
             float tempTextSize = cellTextSize * cellSize * 0.9f / Math.max(cellSize * 0.9f, paint.measureText(String.valueOf(value)));
@@ -433,8 +432,10 @@ public class MainView extends View {
         cellRectangleIds[8] = R.drawable.cell_rectangle_16;
         cellRectangleIds[9] = R.drawable.cell_rectangle_8;
         cellRectangleIds[10] = R.drawable.cell_rectangle_4;
-        cellRectangleIds[11] = R.drawable.cell_rectangle_2;
-        for (int xx = 12; xx < cellRectangleIds.length; xx++) {
+        cellRectangleIds[11] = R.drawable.cell_rectangle_4;
+        cellRectangleIds[12] = R.drawable.cell_rectangle_4;
+        cellRectangleIds[13] = R.drawable.cell_rectangle_4;
+        for (int xx = 14; xx < cellRectangleIds.length; xx++) {
             cellRectangleIds[xx] = R.drawable.cell_rectangle_4096;
         }
         return cellRectangleIds;
