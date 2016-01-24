@@ -1,9 +1,11 @@
-package com.uberspot.a2048;
+package com.narayan.a2048;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.uberspot.a2048.R;
 
 class InputListener implements View.OnTouchListener {
 

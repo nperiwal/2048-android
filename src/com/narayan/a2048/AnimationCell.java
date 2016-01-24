@@ -1,4 +1,4 @@
-package com.uberspot.a2048;
+package com.narayan.a2048;
 
 class AnimationCell extends Cell {
     public final int[] extras;

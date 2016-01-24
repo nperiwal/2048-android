@@ -1,4 +1,4 @@
-package com.uberspot.a2048;
+package com.narayan.a2048;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+
+import com.uberspot.a2048.R;
 
 import java.util.ArrayList;
 
