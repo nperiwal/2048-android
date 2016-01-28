@@ -29,7 +29,10 @@ public class MainGame {
     public int gameState = GAME_NORMAL;
     public int lastGameState = GAME_NORMAL;
     private int bufferGameState = GAME_NORMAL;
+    private static final int GAME_ENDLESS = 2;
+    private static final int GAME_ENDLESS_WON = 3;
     private static final String HIGH_SCORE = "high score";
+    private static int endingMinValue;
     final int numSquaresX = 4;
     final int numSquaresY = 4;
     private final Context mContext;
@@ -37,14 +40,15 @@ public class MainGame {
     public Grid grid = null;
     public AnimationGrid aGrid;
     public boolean canUndo;
-    public long score = 0;
-    public long highScore = 0;
-    public long lastScore = 0;
-    private long bufferScore = 0;
+    public int score = 0;
+    public int highScore = 0;
+    public int lastScore = 0;
+    private int bufferScore = 0;
 
     public MainGame(Context context, MainView view) {
         mContext = context;
         mView = view;
+        endingMinValue = -1;
     }
 
     public void newGame() {
@@ -56,7 +60,7 @@ public class MainGame {
             grid.clearGrid();
         }
         aGrid = new AnimationGrid(numSquaresX, numSquaresY);
-        highScore = getHighScore();
+        highScore = (int)getHighScore();
         if (score >= highScore) {
             highScore = score;
             recordHighScore();
@@ -93,7 +97,7 @@ public class MainGame {
     private void recordHighScore() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(HIGH_SCORE, highScore);
+        editor.putLong(HIGH_SCORE, (int)highScore);
         editor.commit();
     }
 
@@ -196,7 +200,7 @@ public class MainGame {
                                 SPAWN_ANIMATION_TIME, MOVE_ANIMATION_TIME, null);
 
                         // Update the score
-                        score = score + 4096/merged.getValue();
+                        score = score + (int)(4096/merged.getValue());
                         highScore = Math.max(score, highScore);
 
                         // The mighty 1 tile
@@ -323,6 +327,20 @@ public class MainGame {
     }
 
     private int winValue() {
-        return startingMaxValue;
+        if (!canContinue()) {
+            return endingMinValue;
+        } else {
+            return startingMaxValue;
+        }
+    }
+
+    public void setEndlessMode() {
+        gameState = GAME_ENDLESS;
+        mView.invalidate();
+        mView.refreshLastTime = true;
+    }
+
+    public boolean canContinue() {
+        return !(gameState == GAME_ENDLESS || gameState == GAME_ENDLESS_WON);
     }
 }

@@ -1,15 +1,15 @@
 package com.narayan.a2048;
 
 public class Tile extends Cell {
-    private final int value;
+    private final double value;
     private Tile[] mergedFrom = null;
 
-    public Tile(int x, int y, int value) {
+    public Tile(int x, int y, double value) {
         super(x, y);
         this.value = value;
     }
 
-    public Tile(Cell cell, int value) {
+    public Tile(Cell cell, double value) {
         super(cell.getX(), cell.getY());
         this.value = value;
     }
@@ -19,7 +19,7 @@ public class Tile extends Cell {
         this.setY(cell.getY());
     }
 
-    public int getValue() {
+    public double getValue() {
         return this.value;
     }
 
