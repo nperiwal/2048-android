@@ -131,8 +131,6 @@ class InputListener implements View.OnTouchListener {
                             mView.game.newGame();
                         }
 
-                    } else if (iconPressed(mView.sXUndo, mView.sYIcons)) {
-                        mView.game.revertUndoState();
                     } else if (isTap(2) && inRange(mView.startingX, x, mView.endingX)
                             && inRange(mView.startingY, x, mView.endingY) && mView.continueButtonEnabled) {
                         mView.game.setEndlessMode();

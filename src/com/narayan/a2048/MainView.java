@@ -431,7 +431,6 @@ public class MainView extends View {
         Canvas canvas = new Canvas(background);
         drawHeader(canvas);
         drawNewGameButton(canvas, false);
-        drawUndoButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
         drawInstructions(canvas);
@@ -469,9 +468,8 @@ public class MainView extends View {
         cellRectangleIds[9] = R.drawable.cell_rectangle_512;
         cellRectangleIds[10] = R.drawable.cell_rectangle_1024;
         cellRectangleIds[11] = R.drawable.cell_rectangle_2048;
-        cellRectangleIds[12] = R.drawable.cell_rectangle_2048;
-        cellRectangleIds[13] = R.drawable.cell_rectangle;
-        for (int xx = 14; xx < cellRectangleIds.length; xx++) {
+        cellRectangleIds[12] = R.drawable.cell_rectangle;
+        for (int xx = 13; xx < cellRectangleIds.length; xx++) {
             cellRectangleIds[xx] = R.drawable.cell_rectangle_4096;
         }
         return cellRectangleIds;
