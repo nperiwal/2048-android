@@ -40,10 +40,10 @@ public class MainGame {
     public Grid grid = null;
     public AnimationGrid aGrid;
     public boolean canUndo;
-    public int score = 0;
-    public int highScore = 0;
-    public int lastScore = 0;
-    private int bufferScore = 0;
+    public long score = 0;
+    public long highScore = 0;
+    public long lastScore = 0;
+    private long bufferScore = 0;
 
     public MainGame(Context context, MainView view) {
         mContext = context;
@@ -97,7 +97,7 @@ public class MainGame {
     private void recordHighScore() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(HIGH_SCORE, (int)highScore);
+        editor.putLong(HIGH_SCORE, highScore);
         editor.commit();
     }
 

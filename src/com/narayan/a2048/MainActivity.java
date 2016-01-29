@@ -89,9 +89,9 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        editor.putInt(SCORE, view.game.score);
-        editor.putInt(HIGH_SCORE, view.game.highScore);
-        editor.putInt(UNDO_SCORE, view.game.lastScore);
+        editor.putLong(SCORE, view.game.score);
+        editor.putLong(HIGH_SCORE, view.game.highScore);
+        editor.putLong(UNDO_SCORE, view.game.lastScore);
         editor.putBoolean(CAN_UNDO, view.game.canUndo);
         editor.putInt(GAME_STATE, view.game.gameState);
         editor.putInt(UNDO_GAME_STATE, view.game.lastGameState);
@@ -126,9 +126,9 @@ public class MainActivity extends Activity {
             }
         }
 
-        view.game.score = settings.getInt(SCORE, view.game.score);
-        view.game.highScore = settings.getInt(HIGH_SCORE, view.game.highScore);
-        view.game.lastScore = settings.getInt(UNDO_SCORE, view.game.lastScore);
+        view.game.score = settings.getLong(SCORE, view.game.score);
+        view.game.highScore = settings.getLong(HIGH_SCORE, view.game.highScore);
+        view.game.lastScore = settings.getLong(UNDO_SCORE, view.game.lastScore);
         view.game.canUndo = settings.getBoolean(CAN_UNDO, view.game.canUndo);
         view.game.gameState = settings.getInt(GAME_STATE, view.game.gameState);
         view.game.lastGameState = settings.getInt(UNDO_GAME_STATE, view.game.lastGameState);
