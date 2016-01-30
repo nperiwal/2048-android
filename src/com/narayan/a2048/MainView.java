@@ -37,6 +37,7 @@ public class MainView extends View {
     public int sXNewGame;
     public int sXUndo;
     public int iconSize;
+    public int shareIconSize;
     //Misc
     boolean refreshLastTime = true;
     //Timing
@@ -240,18 +241,22 @@ public class MainView extends View {
 
         drawDrawable(canvas,
                 backgroundRectangle,
-                sXUndo,
-                sYIcons, sXUndo + iconSize,
+                sXUndo - shareIconSize/3,
+                sYIcons, sXUndo + shareIconSize * 2/3,
                 sYIcons + iconSize
         );
 
-        drawDrawable(canvas,
+        paint.setTextSize(bodyTextSize);
+        paint.setColor(getResources().getColor(R.color.text_white));
+        canvas.drawText(getResources().getString(R.string.share), sXUndo - shareIconSize/3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
+
+        /*drawDrawable(canvas,
                 getResources().getDrawable(R.drawable.ic_action_undo),
                 sXUndo + iconPaddingSize,
                 sYIcons + iconPaddingSize,
                 sXUndo + iconSize - iconPaddingSize,
                 sYIcons + iconSize - iconPaddingSize
-        );
+        );*/
     }
 
     private void drawHeader(Canvas canvas) {
@@ -431,6 +436,7 @@ public class MainView extends View {
         Canvas canvas = new Canvas(background);
         drawHeader(canvas);
         drawNewGameButton(canvas, false);
+        drawUndoButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
         drawInstructions(canvas);
@@ -509,6 +515,7 @@ public class MainView extends View {
         int screenMiddleY = height / 2;
         int boardMiddleY = screenMiddleY + cellSize / 2;
         iconSize = cellSize / 2;
+        shareIconSize = cellSize;
 
         //Grid Dimensions
         double halfNumSquaresX = game.numSquaresX / 2d;
