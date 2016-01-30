@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.narayan.a2048.R;
-
 class InputListener implements View.OnTouchListener {
 
     private static final int SWIPE_MIN_DISTANCE = 0;
@@ -132,7 +130,7 @@ class InputListener implements View.OnTouchListener {
                             mView.game.newGame();
                         }
 
-                    } else if (shareIconPressed(mView.sXUndo - mView.shareIconSize/4, mView.sYIcons)) {
+                    } else if (shareIconPressed(mView.sXShare - mView.shareIconSize/4, mView.sYIcons)) {
                         final Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
                         intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.narayan.a2048");

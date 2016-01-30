@@ -35,7 +35,7 @@ public class MainView extends View {
     //Icon variables
     public int sYIcons;
     public int sXNewGame;
-    public int sXUndo;
+    public int sXShare;
     public int iconSize;
     public int shareIconSize;
     //Misc
@@ -237,26 +237,18 @@ public class MainView extends View {
         );
     }
 
-    private void drawUndoButton(Canvas canvas) {
+    private void drawShareButton(Canvas canvas) {
 
         drawDrawable(canvas,
                 backgroundRectangle,
-                sXUndo - shareIconSize/3,
-                sYIcons, sXUndo + shareIconSize * 2/3,
+                sXShare - shareIconSize/3,
+                sYIcons, sXShare + shareIconSize * 2/3,
                 sYIcons + iconSize
         );
 
         paint.setTextSize(bodyTextSize);
         paint.setColor(getResources().getColor(R.color.text_white));
-        canvas.drawText(getResources().getString(R.string.share), sXUndo - shareIconSize/3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
-
-        /*drawDrawable(canvas,
-                getResources().getDrawable(R.drawable.ic_action_undo),
-                sXUndo + iconPaddingSize,
-                sYIcons + iconPaddingSize,
-                sXUndo + iconSize - iconPaddingSize,
-                sYIcons + iconSize - iconPaddingSize
-        );*/
+        canvas.drawText(getResources().getString(R.string.share), sXShare - shareIconSize/3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
     }
 
     private void drawHeader(Canvas canvas) {
@@ -273,6 +265,7 @@ public class MainView extends View {
     private void drawInstructions(Canvas canvas) {
         paint.setTextSize(instructionsTextSize);
         paint.setTextAlign(Paint.Align.LEFT);
+        paint.setColor(getResources().getColor(R.color.text_black));
         int textShiftY = centerText() * 2;
         canvas.drawText(getResources().getString(R.string.instructions), startingX,
                 endingY - textShiftY + textPaddingSize, paint);
@@ -436,7 +429,7 @@ public class MainView extends View {
         Canvas canvas = new Canvas(background);
         drawHeader(canvas);
         drawNewGameButton(canvas, false);
-        drawUndoButton(canvas);
+        drawShareButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
         drawInstructions(canvas);
@@ -569,7 +562,7 @@ public class MainView extends View {
 
         sYIcons = (startingY + eYAll) / 2 - iconSize / 2;
         sXNewGame = (endingX - iconSize);
-        sXUndo = sXNewGame - iconSize * 3 / 2 - iconPaddingSize;
+        sXShare = sXNewGame - iconSize * 3 / 2 - iconPaddingSize;
         resyncTime();
     }
 
