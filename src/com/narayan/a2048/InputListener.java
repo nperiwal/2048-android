@@ -133,9 +133,11 @@ class InputListener implements View.OnTouchListener {
                     } else if (shareIconPressed(mView.sXShare - mView.shareIconSize/4, mView.sYIcons)) {
                         final Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.narayan.a2048");
+                        intent.putExtra(Intent.EXTRA_TEXT,
+                                mView.getContext().getResources().getText(R.string.share_message));
                         try {
-                            mView.getContext().startActivity(Intent.createChooser(intent, "Select an action"));
+                            mView.getContext().startActivity(Intent.createChooser(intent,
+                                    mView.getContext().getResources().getText(R.string.send_to)));
                         } catch (android.content.ActivityNotFoundException ex) {
                             System.out.println("Error in starting activity for sharing");
                             ex.printStackTrace();
