@@ -5,7 +5,7 @@
     android:versionName="3.2" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="9"
         android:targetSdkVersion="23" />
 
     <application
@@ -13,6 +13,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
         <activity
             android:name="com.narayan.a2048.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

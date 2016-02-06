@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_id">270071667644</string>
+    <string name="package_name">com.narayan.a2048</string>
+    <string name="achievement_achievements">CgkIvLeajO4HEAIQBA</string>
+    <string name="achievement_achievement_2">CgkIvLeajO4HEAIQBQ</string>
+    <string name="achievement_achievement_4">CgkIvLeajO4HEAIQBg</string>
+    <string name="achievement_achievement_8">CgkIvLeajO4HEAIQBw</string>
+    <string name="achievement_achievement_16">CgkIvLeajO4HEAIQCA</string>
+    <string name="leaderboard_high_scores">CgkIvLeajO4HEAIQAQ</string>
+</resources>

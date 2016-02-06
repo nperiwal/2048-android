@@ -5,6 +5,7 @@
     <string name="header">2048</string>
     <string name="reverse">Reverse</string>
     <string name="share">Share</string>
+    <string name="leaderboard">Leaderboard</string>
     <string name="share_message">Play Reverse 2048. Get it from Playstore at https://play.google.com/store/apps/details?id=com.narayan.a2048</string>
     <string name="send_to">Share Reverse 2048</string>
     <string name="action_settings">Settings</string>
@@ -12,7 +13,7 @@
 	<string name="toggle_fullscreen">Long click to toggle fullscreen</string>
 
 
-    <string name="high_score">HIGH SCORE</string>
+    <string name="high_score">BEST</string>
     <string name="score">SCORE</string>
     <string name="instructions">Swipe to move. Reach 1.</string>
     <string name="you_win">You Win!</string>
@@ -27,4 +28,15 @@
     <string name="reset_dialog_title">Reset game?</string>
     <string name="reset_dialog_message">Are you sure you wish to reset the game?</string>
 
+    <string name="gamehelper_sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
+    <string name="gamehelper_app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
+    <string name="gamehelper_license_failed">License check failed.</string>
+    <string name="gamehelper_unknown_error">Unknown error.</string>
+
+    <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
+    <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
+    <string name="license_failed">License check failed.</string>
+    <string name="unknown_error">Unknown error.</string>
+
+    <string name="signin_other_error">There was an issue with sign in.  Please try again later.</string>
 </resources>

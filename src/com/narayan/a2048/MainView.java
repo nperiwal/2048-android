@@ -36,6 +36,7 @@ public class MainView extends View {
     public int sYIcons;
     public int sXNewGame;
     public int sXShare;
+    public int sXLeaderboard;
     public int iconSize;
     public int shareIconSize;
     //Misc
@@ -248,18 +249,32 @@ public class MainView extends View {
 
         paint.setTextSize(bodyTextSize);
         paint.setColor(getResources().getColor(R.color.text_white));
-        canvas.drawText(getResources().getString(R.string.share), sXShare - shareIconSize/3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
+        canvas.drawText(getResources().getString(R.string.share), sXShare - shareIconSize / 3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
+    }
+
+    private void drawLeaderboardButton(Canvas canvas) {
+
+        drawDrawable(canvas,
+                backgroundRectangle,
+                sXLeaderboard,
+                sYIcons, sXLeaderboard + shareIconSize * 37 / 20,
+                sYIcons + iconSize
+        );
+
+        paint.setTextSize(bodyTextSize);
+        paint.setColor(getResources().getColor(R.color.text_white));
+        canvas.drawText(getResources().getString(R.string.leaderboard), sXLeaderboard + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
     }
 
     private void drawHeader(Canvas canvas) {
-        paint.setTextSize(headerTextSize);
+        paint.setTextSize(headerTextSize * 8 / 10);
         paint.setColor(getResources().getColor(R.color.text_black));
         paint.setTextAlign(Paint.Align.LEFT);
         int textShiftY = centerText() * 2;
         int headerStartY = sYAll - textShiftY;
         canvas.drawText(getResources().getString(R.string.header), startingX, headerStartY, paint);
         paint.setTextSize(bodyTextSize);
-        canvas.drawText(getResources().getString(R.string.reverse), startingX, sYIcons - centerText() * 2, paint);
+        canvas.drawText(getResources().getString(R.string.reverse), startingX, sYIcons + centerText(), paint);
     }
 
     private void drawInstructions(Canvas canvas) {
@@ -430,6 +445,7 @@ public class MainView extends View {
         drawHeader(canvas);
         drawNewGameButton(canvas, false);
         drawShareButton(canvas);
+        drawLeaderboardButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
         drawInstructions(canvas);
@@ -563,6 +579,7 @@ public class MainView extends View {
         sYIcons = (startingY + eYAll) / 2 - iconSize / 2;
         sXNewGame = (endingX - iconSize);
         sXShare = sXNewGame - iconSize * 3 / 2 - iconPaddingSize;
+        sXLeaderboard = sXShare - shareIconSize * 45 / 20 - iconPaddingSize;
         resyncTime();
     }
 

@@ -1,10 +1,13 @@
 package com.narayan.a2048;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.google.android.gms.games.Games;
 
 class InputListener implements View.OnTouchListener {
 
@@ -142,6 +145,9 @@ class InputListener implements View.OnTouchListener {
                             System.out.println("Error in starting activity for sharing");
                             ex.printStackTrace();
                         }
+                    } else if (leaderboardIconPressed(mView.sXLeaderboard, mView.sYIcons)) {
+                        MainActivity host = (MainActivity) view.getContext();
+                        host.startLeaderboard();
                     } else if (isTap(2) && inRange(mView.startingX, x, mView.endingX)
                             && inRange(mView.startingY, x, mView.endingY) && mView.continueButtonEnabled) {
                         mView.game.setEndlessMode();
@@ -162,6 +168,11 @@ class InputListener implements View.OnTouchListener {
 
     private boolean shareIconPressed(int sx, int sy) {
         return isTap(1) && inRange(sx, x, sx + mView.shareIconSize)
+                && inRange(sy, y, sy + mView.iconSize);
+    }
+
+    private boolean leaderboardIconPressed(int sx, int sy) {
+        return isTap(1) && inRange(sx, x, sx + mView.shareIconSize * 37 / 20)
                 && inRange(sy, y, sy + mView.iconSize);
     }
 

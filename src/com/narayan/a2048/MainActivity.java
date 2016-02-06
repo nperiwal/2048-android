@@ -1,12 +1,43 @@
 package com.narayan.a2048;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 
-public class MainActivity extends Activity {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
+import com.google.android.gms.plus.Plus;
+import com.narayan.a2048.basegameutils.BaseGameUtils;
+
+public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
+
+    private GoogleApiClient mGoogleApiClient;
+
+    // Are we currently resolving a connection failure?
+    private boolean mResolvingConnectionFailure = false;
+
+    // Has the user clicked the sign-in button?
+    private boolean mSignInClicked = false;
+
+    // Automatically start the sign-in flow when the Activity starts
+    private boolean mAutoStartSignInFlow = false;
+
+    // request codes we use when invoking an external activity
+    private static final int RC_RESOLVE = 5000;
+    private static final int RC_UNUSED = 5001;
+    private static final int RC_SIGN_IN = 9001;
+
+    // tag for debug logging
+    final boolean ENABLE_DEBUG = true;
+
+    public static final String TAG = "MAIN_ACTIVITY";
 
     private static final String WIDTH = "width";
     private static final String HEIGHT = "height";
@@ -24,6 +55,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         view = new MainView(this);
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         view.hasSaveState = settings.getBoolean("save_state", false);
 
@@ -33,6 +71,26 @@ public class MainActivity extends Activity {
             }
         }
         setContentView(view);
+    }
+
+    private boolean isSignedIn() {
+        return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart(): connecting");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop(): disconnecting");
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -132,5 +190,64 @@ public class MainActivity extends Activity {
         view.game.canUndo = settings.getBoolean(CAN_UNDO, view.game.canUndo);
         view.game.gameState = settings.getInt(GAME_STATE, view.game.gameState);
         view.game.lastGameState = settings.getInt(UNDO_GAME_STATE, view.game.lastGameState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.d(TAG, "onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == RC_SIGN_IN) {
+            mSignInClicked = false;
+            mResolvingConnectionFailure = false;
+            if (resultCode == RESULT_OK) {
+                mGoogleApiClient.connect();
+            } else {
+                BaseGameUtils.showActivityResultError(this, requestCode, resultCode, R.string.signin_other_error);
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected(): connected to Google APIs");
+        // Set the greeting appropriately on main menu
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended(): attempting to connect");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed(): attempting to resolve");
+        if (mResolvingConnectionFailure) {
+            Log.d(TAG, "onConnectionFailed(): already resolving");
+            return;
+        }
+
+        if (mSignInClicked || mAutoStartSignInFlow) {
+            mAutoStartSignInFlow = false;
+            mSignInClicked = false;
+            mResolvingConnectionFailure = true;
+            if (!BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult,
+                    RC_SIGN_IN, getString(R.string.signin_other_error))) {
+                mResolvingConnectionFailure = false;
+            }
+        }
+    }
+
+    public void startLeaderboard() {
+        Log.d(TAG, "onStartLeaderboard()");
+        mSignInClicked = true;
+        if (isSignedIn()) {
+            Games.Leaderboards.submitScore(mGoogleApiClient,
+                    getString(R.string.leaderboard_high_scores), view.game.highScore);
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
+                    getString(R.string.leaderboard_high_scores)), RC_UNUSED);
+        } else {
+            mGoogleApiClient.connect();
+        }
     }
 }
