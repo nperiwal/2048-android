@@ -133,7 +133,7 @@ class InputListener implements View.OnTouchListener {
                             mView.game.newGame();
                         }
 
-                    } else if (shareIconPressed(mView.sXShare - mView.shareIconSize/4, mView.sYIcons)) {
+                    } else if (shareIconPressed(mView.sXShare, mView.sYIcons)) {
                         final Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
                         intent.putExtra(Intent.EXTRA_TEXT,
@@ -167,12 +167,12 @@ class InputListener implements View.OnTouchListener {
     }
 
     private boolean shareIconPressed(int sx, int sy) {
-        return isTap(1) && inRange(sx, x, sx + mView.shareIconSize)
+        return isTap(1) && inRange(sx, x, sx + mView.iconSize)
                 && inRange(sy, y, sy + mView.iconSize);
     }
 
     private boolean leaderboardIconPressed(int sx, int sy) {
-        return isTap(1) && inRange(sx, x, sx + mView.shareIconSize * 37 / 20)
+        return isTap(1) && inRange(sx, x, sx + mView.iconSize)
                 && inRange(sy, y, sy + mView.iconSize);
     }
 

@@ -84,8 +84,6 @@ public class MainView extends View {
             lightUpRectangle = resources.getDrawable(R.drawable.light_up_rectangle);
             fadeRectangle = resources.getDrawable(R.drawable.fade_rectangle);
             this.setBackgroundColor(resources.getColor(R.color.background));
-            Typeface font = Typeface.createFromAsset(resources.getAssets(), "ClearSans-Bold.ttf");
-            paint.setTypeface(font);
             paint.setAntiAlias(true);
         } catch (Exception e) {
             Log.e(TAG, "Error getting assets?", e);
@@ -242,14 +240,18 @@ public class MainView extends View {
 
         drawDrawable(canvas,
                 backgroundRectangle,
-                sXShare - shareIconSize/3,
-                sYIcons, sXShare + shareIconSize * 2/3,
+                sXShare,
+                sYIcons, sXShare + iconSize,
                 sYIcons + iconSize
         );
 
-        paint.setTextSize(bodyTextSize);
-        paint.setColor(getResources().getColor(R.color.text_white));
-        canvas.drawText(getResources().getString(R.string.share), sXShare - shareIconSize / 3 + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
+        drawDrawable(canvas,
+                getResources().getDrawable(R.drawable.ic_action_share),
+                sXShare + iconPaddingSize,
+                sYIcons + iconPaddingSize,
+                sXShare + iconSize - iconPaddingSize,
+                sYIcons + iconSize - iconPaddingSize
+        );
     }
 
     private void drawLeaderboardButton(Canvas canvas) {
@@ -257,13 +259,17 @@ public class MainView extends View {
         drawDrawable(canvas,
                 backgroundRectangle,
                 sXLeaderboard,
-                sYIcons, sXLeaderboard + shareIconSize * 37 / 20,
+                sYIcons, sXLeaderboard + iconSize,
                 sYIcons + iconSize
         );
 
-        paint.setTextSize(bodyTextSize);
-        paint.setColor(getResources().getColor(R.color.text_white));
-        canvas.drawText(getResources().getString(R.string.leaderboard), sXLeaderboard + iconPaddingSize, sYIcons + iconPaddingSize - centerText() * 3, paint);
+        drawDrawable(canvas,
+                getResources().getDrawable(R.drawable.ic_action_leaderboard),
+                sXLeaderboard + iconPaddingSize,
+                sYIcons + iconPaddingSize,
+                sXLeaderboard + iconSize - iconPaddingSize,
+                sYIcons + iconSize - iconPaddingSize
+        );
     }
 
     private void drawHeader(Canvas canvas) {
@@ -578,8 +584,8 @@ public class MainView extends View {
 
         sYIcons = (startingY + eYAll) / 2 - iconSize / 2;
         sXNewGame = (endingX - iconSize);
-        sXShare = sXNewGame - iconSize * 3 / 2 - iconPaddingSize;
-        sXLeaderboard = sXShare - shareIconSize * 45 / 20 - iconPaddingSize;
+        sXShare = sXNewGame - iconSize - iconPaddingSize;
+        sXLeaderboard = sXShare - iconSize - iconPaddingSize;
         resyncTime();
     }
 
