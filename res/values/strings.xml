@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">2048</string>
+    <string name="app_name">Reverse 2048</string>
     <string name="header">2048</string>
     <string name="reverse">Reverse</string>
     <string name="share">Share</string>
