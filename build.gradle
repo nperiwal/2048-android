@@ -47,6 +47,7 @@ android {
     }
 
     defaultConfig {
+        applicationId "com.narayan.a2048"
         multiDexEnabled true
     }
 }
