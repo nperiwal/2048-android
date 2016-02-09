@@ -65,6 +65,8 @@ public class MainGame {
             highScore = score;
             recordHighScore();
         }
+        MainActivity host = (MainActivity) mView.getContext();
+        host.pushCurrentScoreToLeaderboard(score);
         score = 0;
         gameState = GAME_NORMAL;
         addStartTiles();
@@ -243,6 +245,8 @@ public class MainGame {
             highScore = score;
             recordHighScore();
         }
+        MainActivity host = (MainActivity) mView.getContext();
+        host.pushCurrentScoreToLeaderboard(score);
     }
 
     private Cell getVector(int direction) {

@@ -157,11 +157,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
     protected void onResume() {
+        Log.d(TAG, "onResume():");
         super.onResume();
         load();
     }
 
     private void load() {
+        Log.d(TAG, "onLoad():");
         //Stopping all animations
         view.game.aGrid.cancelAnimations();
 
@@ -238,12 +240,19 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         }
     }
 
+    public void pushCurrentScoreToLeaderboard(long score) {
+        Log.d(TAG, "onPushCurrentScoreToLeaderboard)");
+        if (isSignedIn()) {
+            Log.d(TAG, "onPushCurrentScoreToLeaderboard : signed in)");
+            Games.Leaderboards.submitScore(mGoogleApiClient,
+                    getString(R.string.leaderboard_high_scores), score);
+        }
+    }
+
     public void startLeaderboard() {
         Log.d(TAG, "onStartLeaderboard()");
         mSignInClicked = true;
         if (isSignedIn()) {
-            Games.Leaderboards.submitScore(mGoogleApiClient,
-                    getString(R.string.leaderboard_high_scores), view.game.highScore);
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
                     getString(R.string.leaderboard_high_scores)), RC_UNUSED);
         } else {
