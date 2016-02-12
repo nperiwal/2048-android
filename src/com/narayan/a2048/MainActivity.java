@@ -10,8 +10,11 @@ import android.view.KeyEvent;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.Player;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
+import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.google.android.gms.plus.Plus;
 import com.narayan.a2048.basegameutils.BaseGameUtils;
 
@@ -212,6 +215,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected(): connected to Google APIs");
+
         // Set the greeting appropriately on main menu
     }
 
@@ -244,6 +248,29 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         Log.d(TAG, "onPushCurrentScoreToLeaderboard)");
         if (isSignedIn()) {
             Log.d(TAG, "onPushCurrentScoreToLeaderboard : signed in)");
+
+            Games.Leaderboards.loadCurrentPlayerLeaderboardScore(mGoogleApiClient,
+                    getString(R.string.leaderboard_high_scores), LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC )
+                    .setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+                        @Override
+                        public void onResult(Leaderboards.LoadPlayerScoreResult arg0) {
+                            LeaderboardScore c = arg0.getScore();
+                            if (c != null) {
+                                System.out.println("raw: " + c.getRawScore());
+                                if (c.getRawScore() < view.game.highScore) {
+                                    if (isSignedIn()) {
+                                        Games.Leaderboards.submitScore(mGoogleApiClient,
+                                                getString(R.string.leaderboard_high_scores),
+                                                view.game.highScore);
+                                    }
+                                }
+                            } else {
+                                System.out.println("Could not fetch the score");
+                            }
+                        }
+                    });
+
             Games.Leaderboards.submitScore(mGoogleApiClient,
                     getString(R.string.leaderboard_high_scores), score);
         }
