@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AFInAppEventType;
+import com.appsflyer.AppsFlyerLib;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -17,6 +20,9 @@ import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.google.android.gms.plus.Plus;
 import com.narayan.a2048.basegameutils.BaseGameUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -55,6 +61,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        AppsFlyerLib.setAppsFlyerKey(getString(R.string.apps_flyer_dev_key));
+        AppsFlyerLib.sendTracking(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         view = new MainView(this);
 
@@ -273,6 +283,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
             Games.Leaderboards.submitScore(mGoogleApiClient,
                     getString(R.string.leaderboard_high_scores), score);
+
+            if (score >=1000) {
+                Map<String, Object> eventValue = new HashMap<String, Object>();
+                eventValue.put(AFInAppEventParameterName.LEVEL, 1);
+                eventValue.put(AFInAppEventParameterName.SCORE, 1000);
+                AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+            }
+
         }
     }
 
