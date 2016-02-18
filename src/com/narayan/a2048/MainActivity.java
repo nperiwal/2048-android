@@ -284,13 +284,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             Games.Leaderboards.submitScore(mGoogleApiClient,
                     getString(R.string.leaderboard_high_scores), score);
 
-            if (score >=1000) {
-                Map<String, Object> eventValue = new HashMap<String, Object>();
-                eventValue.put(AFInAppEventParameterName.LEVEL, 1);
-                eventValue.put(AFInAppEventParameterName.SCORE, 1000);
-                AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
-            }
 
+        }
+
+        if (score >=1000) {
+            Map<String, Object> eventValue = new HashMap<String, Object>();
+            eventValue.put(AFInAppEventParameterName.LEVEL, 1);
+            eventValue.put(AFInAppEventParameterName.SCORE, 1000);
+            AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
         }
     }
 
