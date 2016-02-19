@@ -286,12 +286,35 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
 
         }
-
-        if (score >=1000) {
-            Map<String, Object> eventValue = new HashMap<String, Object>();
-            eventValue.put(AFInAppEventParameterName.LEVEL, 1);
-            eventValue.put(AFInAppEventParameterName.SCORE, 1000);
-            AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+        if (view!=null && view.game!=null) {
+            if (score >= view.game.highScore) {
+                Map<String, Object> eventValue = new HashMap<String, Object>();
+                if (score >= 1000 && score < 2000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 1);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 1000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                } else if (score >= 2000 && score < 5000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 2);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 2000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                } else if (score >= 5000 && score < 10000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 3);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 5000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                } else if (score >= 10000 && score < 50000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 4);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 10000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                } else if (score >= 50000 && score < 100000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 5);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 50000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                } else if (score >= 100000) {
+                    eventValue.put(AFInAppEventParameterName.LEVEL, 6);
+                    eventValue.put(AFInAppEventParameterName.SCORE, 100000);
+                    AppsFlyerLib.trackEvent(getApplicationContext(), AFInAppEventType.LEVEL_ACHIEVED, eventValue);
+                }
+            }
         }
     }
 
