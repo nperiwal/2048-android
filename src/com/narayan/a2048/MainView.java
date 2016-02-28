@@ -528,7 +528,7 @@ public class MainView extends View {
         gridWidth = cellSize / 7;
         int screenMiddleX = width / 2;
         int screenMiddleY = height / 2;
-        int boardMiddleY = screenMiddleY + cellSize / 2;
+        int boardMiddleY = screenMiddleY + cellSize * 3 / 4;
         iconSize = cellSize / 2;
         shareIconSize = cellSize;
 

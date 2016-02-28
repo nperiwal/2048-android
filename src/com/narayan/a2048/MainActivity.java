@@ -7,10 +7,16 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.RelativeLayout;
 
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AFInAppEventType;
 import com.appsflyer.AppsFlyerLib;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -59,14 +65,22 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private static final String UNDO_GAME_STATE = "undo game state";
     private MainView view;
 
+    private RelativeLayout mAdRelativeLayout;
+
+    InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         AppsFlyerLib.setAppsFlyerKey(getString(R.string.apps_flyer_dev_key));
         AppsFlyerLib.sendTracking(getApplicationContext());
 
+        mAdRelativeLayout = new RelativeLayout(this);
+
         super.onCreate(savedInstanceState);
         view = new MainView(this);
+
+        mAdRelativeLayout.addView(view);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -83,7 +97,48 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 load();
             }
         }
-        setContentView(view);
+        setContentView(mAdRelativeLayout);
+        placeAdView();
+        configureInterstitialAd();
+    }
+
+    private void configureInterstitialAd(){
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id1));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+            }
+        });
+
+        requestNewInterstitial();
+    }
+
+    public void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    private void placeAdView() {
+
+        AdView mAdView = new AdView(this);
+        mAdView.setAdSize(AdSize.BANNER);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        mAdView.setLayoutParams(params);
+
+        mAdRelativeLayout.addView(mAdView);
+
+        mAdView.setAdUnitId(getString(R.string.banner_ad_unit_id1));
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private boolean isSignedIn() {
