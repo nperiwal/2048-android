@@ -73,14 +73,13 @@ public class MainGame {
         mView.refreshLastTime = true;
         mView.resyncTime();
         mView.invalidate();
-        host.requestInmobiInterstitialAd();
-        /*if (host.mInterstitialAd != null) {
+        if (host.mInterstitialAd != null) {
             if (host.mInterstitialAd.isLoaded()) {
                 host.mInterstitialAd.show();
             } else {
                 host.requestNewInterstitial();
             }
-        }*/
+        }
     }
 
     private void addStartTiles() {
