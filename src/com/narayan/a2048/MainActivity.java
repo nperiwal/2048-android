@@ -1,10 +1,13 @@
 package com.narayan.a2048;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
@@ -25,6 +28,10 @@ import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.google.android.gms.plus.Plus;
+import com.inmobi.ads.InMobiAdRequestStatus;
+import com.inmobi.ads.InMobiBanner;
+import com.inmobi.ads.InMobiInterstitial;
+import com.inmobi.sdk.InMobiSdk;
 import com.narayan.a2048.basegameutils.BaseGameUtils;
 
 import java.util.HashMap;
@@ -69,11 +76,20 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     InterstitialAd mInterstitialAd;
 
+    private static final long BANNER_PLACEMENT_ID = 1458409275434l;
+    private static final long INTERSTITIAL_PLACEMENT_ID = 1458857929542l;
+    public InMobiInterstitial inMobiInterstitial;
+    InMobiInterstitial.InterstitialAdListener interstitialAdListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         AppsFlyerLib.setAppsFlyerKey(getString(R.string.apps_flyer_dev_key));
         AppsFlyerLib.sendTracking(getApplicationContext());
+
+        InMobiSdk.init(getApplicationContext(), getString(R.string.inmobi_account_id));
+        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
 
         mAdRelativeLayout = new RelativeLayout(this);
 
@@ -98,11 +114,65 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             }
         }
         setContentView(mAdRelativeLayout);
-        placeAdView();
-        configureInterstitialAd();
+        placeInmobiBannerAd();
+        placeInmobiInterstitialAd();
+
+        //placeAdView();
+        //configureInterstitialAd();
     }
 
-    private void configureInterstitialAd(){
+    public void placeInmobiInterstitialAd() {
+        setInmobiInterstitialListener();
+        inMobiInterstitial = new InMobiInterstitial(this, INTERSTITIAL_PLACEMENT_ID,
+                interstitialAdListener);
+        requestInmobiInterstitialAd();
+    }
+
+    public void requestInmobiInterstitialAd() {
+        if (inMobiInterstitial != null) {
+            if (inMobiInterstitial.isReady()) {
+                inMobiInterstitial.show();
+            } else {
+                inMobiInterstitial.load();
+            }
+        }
+    }
+
+    public void setInmobiInterstitialListener() {
+        interstitialAdListener = new InMobiInterstitial.InterstitialAdListener() {
+            @Override
+            public void onAdLoadSucceeded(InMobiInterstitial ad) {
+            }
+            @Override
+            public void onAdLoadFailed(InMobiInterstitial ad, InMobiAdRequestStatus requestStatus) {}
+            @Override
+            public void onAdDisplayed(InMobiInterstitial ad) {}
+            @Override
+            public void onAdDismissed(InMobiInterstitial ad) {
+                inMobiInterstitial.load();
+            }
+            @Override
+            public void onAdInteraction(InMobiInterstitial ad, Map<Object, Object> params) {}
+            @Override
+            public void onAdRewardActionCompleted(InMobiInterstitial ad, Map<Object, Object> rewards) {}
+            @Override
+            public void onUserLeftApplication(InMobiInterstitial ad) {}
+        };
+    }
+
+    private void placeInmobiBannerAd() {
+        InMobiBanner imbanner = new InMobiBanner(this, BANNER_PLACEMENT_ID);
+        int width = toPixelUnits(320);
+        int height= toPixelUnits(50);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        mAdRelativeLayout.addView(imbanner, params);
+        imbanner.setRefreshInterval(45);
+        imbanner.load();
+    }
+
+    /*private void configureInterstitialAd(){
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id1));
 
@@ -139,7 +209,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-    }
+    }*/
 
     private boolean isSignedIn() {
         return (mGoogleApiClient != null && mGoogleApiClient.isConnected());
@@ -383,4 +453,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             mGoogleApiClient.connect();
         }
     }
+
+    private int toPixelUnits(int dipUnit) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dipUnit * density);
+    }
+
 }
